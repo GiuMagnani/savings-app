@@ -1,0 +1,13 @@
+node_modules/
+public
+.gatsby-context.js
+.DS_Store
+.intermediate-representation/
+.cache/
+yarn.lock
+.env.production
+.env.development
+.idea/
+yarn-error.log
+.env
+.next/

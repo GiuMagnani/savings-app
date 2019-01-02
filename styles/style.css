@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css?family=Barlow:400,600|Oswald:600");
+
+body,
+button,
+input {
+  font-family: "Barlow", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  quotes: "“" "”";
+}
+
+strong {
+  font-weight: 600;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+}
+
+body {
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.anchor-link {
+  top: -115px;
+  display: block;
+  position: relative;
+  visibility: hidden;
+}
+
+.container {
+  max-width: 100%;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+/* Modal style */
+.ReactModal__Body--open {
+  overflow: hidden;
+}
+
+.ReactModal__Body--open main {
+  margin-left: -15px;
+}
+
+.ReactModal__Overlay--after-open {
+  z-index: 9;
+}
