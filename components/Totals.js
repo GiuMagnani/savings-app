@@ -12,6 +12,7 @@ export default class Graph extends React.Component {
       account2: 0,
       account3: 0,
       accountFiverr: 0,
+      bankPrepaid: 0,
     };
   }
 
@@ -24,6 +25,7 @@ export default class Graph extends React.Component {
     const account2 = localStorage.getItem('account2');
     const account3 = localStorage.getItem('account3');
     const accountFiverr = localStorage.getItem('accountFiverr');
+    const bankPrepaid = localStorage.getItem('bankPrepaid');
 
     const checkValue = (value) => {
       return !isNaN(parseFloat(value)) && isFinite(value) ? value : 0;
@@ -35,6 +37,7 @@ export default class Graph extends React.Component {
       account2: checkValue(account2),
       account3: checkValue(account3),
       accountFiverr: checkValue(accountFiverr),
+      bankPrepaid: checkValue(bankPrepaid),
     });
   }
 
@@ -43,7 +46,8 @@ export default class Graph extends React.Component {
       parseFloat(this.state.account1) +
       parseFloat(this.state.account2) +
       parseFloat(this.state.account3) +
-      parseFloat(this.state.accountFiverr);
+      parseFloat(this.state.accountFiverr) +
+      parseFloat(this.state.bankPrepaid);
   };
 
   handleChange = (e) => {
@@ -65,6 +69,10 @@ export default class Graph extends React.Component {
           <InputGroup>
             <span>Bank:</span>
             <input readOnly={ true } value={ this.state.bank } />
+          </InputGroup>
+          <InputGroup>
+            <span>Bank Prepaid:</span>
+            <input onChange={ this.handleChange } type="number" name="bankPrepaid" value={ this.state.bankPrepaid } />
           </InputGroup>
           <InputGroup>
             <span>PayPal Susan:</span>
