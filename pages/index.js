@@ -169,6 +169,18 @@ export default class Index extends React.Component {
     let data = localStorage.getItem("data");
     if (data === undefined || data === "") return null;
     data = JSON.parse(data);
+    let category = '';
+    data.forEach((item) => {
+      category = '';
+      switch (item) {
+        case (item.description.toLowerCase().indexOf('supermercato') !== -1):
+          category = 'food';
+          break;
+        default:
+          category = '';
+      }
+      console.log(category);
+    });
     return data;
   };
 

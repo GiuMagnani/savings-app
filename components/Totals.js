@@ -124,4 +124,8 @@ const InputGroup = styled.div`
   justify-content: space-between;
   width: 250px;
   margin-bottom: 10px;
+
+  input {
+    color: black;
+  }
 `;
