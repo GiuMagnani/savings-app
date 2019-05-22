@@ -5,24 +5,25 @@ import { formatNumber } from "../helpers";
 
 const columns = [
   {
-    dataIndex: "amountBadge",
-    render: amount => <Badge status={amount >= 0 ? "success" : "error"} />
+    dataIndex: "amount",
+    key: "amountBadge",
+    render: amount => <Badge status={amount >= 0 ? "success" : "error"} />,
   },
   {
     title: "Description",
     dataIndex: "description",
-    key: "description"
+    key: "description",
   },
   {
     title: "Amount",
     dataIndex: "amount",
     key: "amount",
-    render: amount => <span>{formatNumber(amount)}</span>
+    render: amount => <span>{formatNumber(amount)}</span>,
   },
   {
     title: "Date",
     dataIndex: "date",
-    key: "date"
+    key: "date",
   },
   {
     title: "Category",
@@ -34,7 +35,7 @@ const columns = [
           {tags[0].toUpperCase()}
         </Tag>
       </span>
-    )
+    ),
   },
   {
     title: "Action",
@@ -43,8 +44,8 @@ const columns = [
       <span>
         <a>Edit</a>
       </span>
-    )
-  }
+    ),
+  },
 ];
 
 const TableWrapper = () => {

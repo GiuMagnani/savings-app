@@ -16,17 +16,17 @@ const months = [
   "Sep",
   "Oct",
   "Nov",
-  "Dec"
+  "Dec",
 ];
 
-const income = months.map((i) => {
+const income = months.map(i => {
   return data
     .filter(x => getMonth(parse(x.date, "dd/MM/yyyy", new Date())) === i)
     .filter(xx => xx.amount >= 0)
     .reduce((total, num) => total + num.amount, 0);
 });
 
-const expenses = months.map((i) => {
+const expenses = months.map(i => {
   return data
     .filter(x => getMonth(parse(x.date, "dd/MM/yyyy", new Date())) === i)
     .filter(xx => xx.amount < 0)
@@ -39,20 +39,20 @@ var dada = {
     {
       label: "Income",
       backgroundColor: "#87d068",
-      data: income
+      data: income,
     },
     {
       label: "Expenses",
       backgroundColor: "red",
-      data: expenses
-    }
-  ]
+      data: expenses,
+    },
+  ],
 };
 
 export default () => {
   return (
     <Col span={24}>
-      {/* <Bar data={dada} height={100} width={100}/> */}
+      <Bar data={dada} height={150} width={150} />
     </Col>
   );
 };

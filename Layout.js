@@ -1,16 +1,17 @@
 import React from "react";
 import { Layout, Menu, Icon } from "antd";
+import "antd/dist/antd.css";
 
 const { Header, Sider, Content } = Layout;
 
 class LayoutWrapper extends React.Component {
   state = {
-    collapsed: true
+    collapsed: true,
   };
 
   toggle = () => {
     this.setState({
-      collapsed: !this.state.collapsed
+      collapsed: !this.state.collapsed,
     });
   };
 
@@ -51,9 +52,8 @@ class LayoutWrapper extends React.Component {
               margin: "24px 16px",
               padding: 24,
               background: "#fff",
-              minHeight: 280
-            }}
-          >
+              minHeight: 280,
+            }}>
             {this.props.children}
           </Content>
         </Layout>

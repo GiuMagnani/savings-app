@@ -1,0 +1,74 @@
+{
+  "category-A": [
+    {
+      "description": "a",
+      "price": 1,
+      "quantity": 1,
+      "frequency": "daily",
+      "category": "category-A"
+    },
+    {
+      "description": "a",
+      "price": 2,
+      "quantity": 1,
+      "frequency": "weekly",
+      "category": "category-A"
+    },
+    {
+      "description": "a",
+      "price": 1.5,
+      "quantity": 1,
+      "frequency": "daily",
+      "category": "category-A"
+    },
+    {
+      "description": "a",
+      "price": 100,
+      "quantity": 1,
+      "frequency": "yearly",
+      "category": "category-A"
+    },
+    {
+      "description": "a",
+      "price": 1,
+      "quantity": 1,
+      "frequency": "daily",
+      "category": "category-A"
+    },
+    {
+      "description": "a",
+      "price": 1,
+      "quantity": 1,
+      "frequency": "daily",
+      "category": "category-A"
+    },
+    {
+      "description": "a",
+      "price": 1,
+      "quantity": 1,
+      "frequency": "daily",
+      "category": "category-A"
+    },
+    {
+      "description": "a",
+      "price": 1,
+      "quantity": 1,
+      "frequency": "daily",
+      "category": "category-A"
+    },
+    {
+      "description": "a",
+      "price": 1,
+      "quantity": 1,
+      "frequency": "daily",
+      "category": "category-A"
+    },
+    {
+      "description": "a",
+      "price": 1,
+      "quantity": 1,
+      "frequency": "daily",
+      "category": "category-A"
+    }
+  ]
+}
