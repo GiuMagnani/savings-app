@@ -65,6 +65,6 @@ a {
 }
 
 .ant-table-body {
-  overflow-x: scroll;
+  overflow-x: auto;
   width: 100%;
 }

@@ -23,6 +23,7 @@ const { TabPane } = Tabs;
 
 export default () => {
   const [budget, setBudget] = useState(budgetData);
+  const [activeTab, setActiveTab] = useState("0");
 
   const getDailyPrice = item => {
     let value = 0;
@@ -47,35 +48,62 @@ export default () => {
     return value;
   };
 
-  const updateFrequency = (category, index, value) => {
-    // setBudget({
-    //   ...budget,
-    //   [category]: budget[category].map((x, i) => {
-    //     if (i === index) {
-    //       return {
-    //         ...x,
-    //         frequency: value,
-    //       };
-    //     }
-    //     return x;
-    //   }),
-    // });
+  const updateFrequency = (currentIndex, value) => {
+    setBudget(
+      budget.map((category, categoryIndex) => {
+        if (categoryIndex === Number(activeTab)) {
+          return {
+            ...category,
+            items: category.items.map((item, index) => {
+              if (index === currentIndex) {
+                return {
+                  ...item,
+                  frequency: value,
+                };
+              }
+              return item;
+            }),
+          };
+        }
+        return category;
+      })
+    );
   };
 
-  const updateBudget = (category, index, e) => {
+  const updateQuantity = (currentIndex, value) => {
+    setBudget(
+      budget.map((category, categoryIndex) => {
+        if (categoryIndex === Number(activeTab)) {
+          return {
+            ...category,
+            items: category.items.map((item, index) => {
+              if (index === currentIndex) {
+                return {
+                  ...item,
+                  quantity: value,
+                };
+              }
+              return item;
+            }),
+          };
+        }
+        return category;
+      })
+    );
+  };
+
+  const updateBudget = (currentIndex, e) => {
     const target = e.target;
     const name = target.name;
     const value = target.value;
 
     setBudget(
-      budget.map(x => {
-        if (x.name === category) {
-          console.log(x.name, name, value);
-
+      budget.map((category, categoryIndex) => {
+        if (categoryIndex === Number(activeTab)) {
           return {
-            ...x,
-            items: x.items.map((item, itemIndex) => {
-              if (itemIndex === index) {
+            ...category,
+            items: category.items.map((item, index) => {
+              if (index === currentIndex) {
                 return {
                   ...item,
                   [name]: value,
@@ -85,25 +113,31 @@ export default () => {
             }),
           };
         }
-        return x;
+        return category;
       })
     );
   };
 
-  const addItem = category => {
-    // setBudget({
-    //   ...budget,
-    //   [category]: [
-    //     ...budget[category],
-    //     {
-    //       description: "a",
-    //       price: 1,
-    //       quantity: 1,
-    //       frequency: "daily",
-    //       category: category,
-    //     },
-    //   ],
-    // });
+  const addItem = categoryName => {
+    setBudget(
+      budget.map(category => {
+        if (category.name === categoryName) {
+          return {
+            ...category,
+            items: [
+              ...category.items,
+              {
+                description: "",
+                price: 0,
+                quantity: 0,
+                frequency: "daily",
+              },
+            ],
+          };
+        }
+        return category;
+      })
+    );
   };
 
   const addCategory = () => {
@@ -136,18 +170,22 @@ export default () => {
     );
   };
 
+  const getTotalQuantity = () => {
+    return budget[activeTab].items.reduce((total, item) => total + item.quantity, 0);
+  };
+
   const columns = [
     {
       title: "description",
       dataIndex: "description",
       key: "description",
+      width: 200,
       render: (text, item, index) => (
         <Input
           defaultValue={text}
-          style={{ width: 200 }}
           value={item.description}
           name="description"
-          onChange={e => updateBudget(item.category, index, e)}
+          onChange={e => updateBudget(index, e)}
         />
       ),
     },
@@ -155,14 +193,14 @@ export default () => {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      width: 200,
+      width: 150,
       render: (price, item, index) => (
         <Input
           defaultValue={price}
           value={item.price}
+          maxLength="6"
           name="price"
-          style={{ width: 100 }}
-          onChange={e => updateBudget(item.category, index, e)}
+          onChange={e => updateBudget(index, e)}
         />
       ),
     },
@@ -170,12 +208,15 @@ export default () => {
       title: "quantity",
       dataIndex: "quantity",
       key: "quantity",
+      totals: true,
+      width: 100,
       render: (quantity, item, index) => (
-        <Input
+        <InputNumber
           defaultValue={quantity}
           value={item.quantity}
+          maxLength="3"
           name="quantity"
-          onChange={e => updateBudget(item.category, index, e)}
+          onChange={e => updateQuantity(index, e)}
         />
       ),
     },
@@ -183,12 +224,13 @@ export default () => {
       title: "Frequency",
       dataIndex: "frequency",
       key: "frequency",
+      width: 120,
       render: (frequency, item, index) => (
         <Select
           defaultValue={frequency}
-          style={{ width: 120 }}
           name="frequency"
-          onChange={value => updateFrequency(item.category, index, value)}>
+          style={{ width: 120 }}
+          onChange={value => updateFrequency(index, value)}>
           <Option value="daily">daily</Option>
           <Option value="weekly">weekly</Option>
           <Option value="monthly">monthly</Option>
@@ -198,35 +240,87 @@ export default () => {
     },
     {
       title: "Daily",
-      dataIndex: "priceDaily",
-      key: "priceDaily",
-      render: (text, item) => <span>{formatNumber(getDailyPrice(item))}</span>,
+      dataIndex: "daily",
+      key: "daily",
+      totals: true,
+      width: 100,
+      render: (text, item) => (
+        <span>{formatNumber(getDailyPrice(item))}</span>
+      ),
     },
     {
       title: "Weekly",
-      dataIndex: "priceWeekly",
-      key: "priceWeekly",
+      dataIndex: "weekly",
+      totals: true,
+      width: 100,
+      key: "weekly",
       render: (text, item) => (
         <span>{formatNumber(getDailyPrice(item) * 7)}</span>
       ),
     },
     {
       title: "Monthly",
-      dataIndex: "priceMonthly",
-      key: "priceMonthly",
+      dataIndex: "monthly",
+      key: "monthly",
+      totals: true,
+      width: 100,
       render: (text, item) => (
         <span>{formatNumber(getDailyPrice(item) * (365 / 12))}</span>
       ),
     },
     {
       title: "Yearly",
-      dataIndex: "priceYearly",
-      key: "priceYearly",
+      dataIndex: "yearly",
+      key: "yearly",
+      totals: true,
+      width: 100,
       render: (text, item) => (
         <span>{formatNumber(getDailyPrice(item) * 365)}</span>
       ),
     },
   ];
+
+  const getTotal = () => {
+    return {
+      daily: budget[activeTab].items.reduce(
+        (total, num) => total + getDailyPrice(num),
+        0
+      ),
+      monthly: budget[activeTab].items.reduce(
+        (total, num) => total + getDailyPrice(num) * 7,
+        0
+      ),
+      weekly: budget[activeTab].items.reduce(
+        (total, num) => total + getDailyPrice(num) * (365 / 12),
+        0
+      ),
+      yearly: budget[activeTab].items.reduce(
+        (total, num) => total + getDailyPrice(num) * 365,
+        0
+      ),
+    };
+  };
+
+  const totalsFooter = columns => (
+    <div className="ant-table ant-table-default">
+      <table>
+        <thead className="ant-table-thead">
+          <tr>
+            {columns.map(item => (
+              <th key={item.dataIndex} style={{ width: item.width }}>
+                {item.totals
+                  ? item.dataIndex === "quantity"
+                    ? getTotalQuantity()
+                    : formatNumber(getTotal()[item.dataIndex])
+                  : "-"}
+              </th>
+            ))}
+          </tr>
+        </thead>
+      </table>
+      <style>{`.ant-table-footer{padding: 0px;}`}</style>
+    </div>
+  );
 
   return (
     <div className="App">
@@ -239,7 +333,10 @@ export default () => {
           onClick={() => addCategory()}>
           Add New Category
         </Button>
-        <Tabs defaultActiveKey="0" type="card">
+        <Tabs
+          defaultActiveKey={activeTab}
+          type="card"
+          onChange={activeKey => setActiveTab(activeKey)}>
           {budget.map((category, index) => {
             return (
               <TabPane
@@ -261,6 +358,7 @@ export default () => {
                   rowKey={index}
                   dataSource={category.items}
                   size="small"
+                  footer={() => totalsFooter(columns)}
                 />
                 <Button
                   type="primary"
