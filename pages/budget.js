@@ -1,6 +1,9 @@
 import { useState } from "react";
 import {
   InputNumber,
+  Icon,
+  Button,
+  Tabs,
   Input,
   Row,
   Col,
@@ -16,6 +19,7 @@ import budgetData from "../budget.json";
 import { formatNumber, parseLocaleNumber } from "../helpers";
 
 const { Option } = Select;
+const { TabPane } = Tabs;
 
 export default () => {
   const [budget, setBudget] = useState(budgetData);
@@ -43,23 +47,19 @@ export default () => {
     return value;
   };
 
-  const priceInput = price => {
-    return <InputNumber defaultValue={price} />;
-  };
-
-  const quantityInput = price => {
-    return <InputNumber defaultValue={price} />;
-  };
-
-  const frequencySelect = frequency => {
-    return (
-      <Select defaultValue={frequency} style={{ width: 120 }}>
-        <Option value="daily">daily</Option>
-        <Option value="weekly">weekly</Option>
-        <Option value="monthly">monthly</Option>
-        <Option value="yearly">yearly</Option>
-      </Select>
-    );
+  const updateFrequency = (category, index, value) => {
+    // setBudget({
+    //   ...budget,
+    //   [category]: budget[category].map((x, i) => {
+    //     if (i === index) {
+    //       return {
+    //         ...x,
+    //         frequency: value,
+    //       };
+    //     }
+    //     return x;
+    //   }),
+    // });
   };
 
   const updateBudget = (category, index, e) => {
@@ -67,20 +67,73 @@ export default () => {
     const name = target.name;
     const value = target.value;
 
-    console.log(category, index);
+    setBudget(
+      budget.map(x => {
+        if (x.name === category) {
+          console.log(x.name, name, value);
 
-    const updatedValue = {
-      ...budget[category][index],
-      [name]: value,
-    };
+          return {
+            ...x,
+            items: x.items.map((item, itemIndex) => {
+              if (itemIndex === index) {
+                return {
+                  ...item,
+                  [name]: value,
+                };
+              }
+              return item;
+            }),
+          };
+        }
+        return x;
+      })
+    );
+  };
 
-    setBudget({
+  const addItem = category => {
+    // setBudget({
+    //   ...budget,
+    //   [category]: [
+    //     ...budget[category],
+    //     {
+    //       description: "a",
+    //       price: 1,
+    //       quantity: 1,
+    //       frequency: "daily",
+    //       category: category,
+    //     },
+    //   ],
+    // });
+  };
+
+  const addCategory = () => {
+    setBudget([
       ...budget,
-      [category]: [
-        ...budget[category],
-        ([budget[category][index]] = updatedValue),
-      ],
-    });
+      {
+        name: `Category ${Object.keys(budget).length + 1}`,
+        items: [
+          {
+            description: "a",
+            price: 1,
+            quantity: 1,
+            frequency: "daily",
+            category: `Category ${Object.keys(budget).length + 1}`,
+          },
+        ],
+      },
+    ]);
+  };
+
+  const editCategory = (category, e) => {
+    const newCategoryName = e.target.value;
+    setBudget(
+      budget.map(x => {
+        if (x.name === category) {
+          return { ...x, name: newCategoryName };
+        }
+        return x;
+      })
+    );
   };
 
   const columns = [
@@ -90,7 +143,10 @@ export default () => {
       key: "description",
       render: (text, item, index) => (
         <Input
-          value={text}
+          defaultValue={text}
+          style={{ width: 200 }}
+          value={item.description}
+          name="description"
           onChange={e => updateBudget(item.category, index, e)}
         />
       ),
@@ -99,19 +155,46 @@ export default () => {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      render: priceInput,
+      width: 200,
+      render: (price, item, index) => (
+        <Input
+          defaultValue={price}
+          value={item.price}
+          name="price"
+          style={{ width: 100 }}
+          onChange={e => updateBudget(item.category, index, e)}
+        />
+      ),
     },
     {
       title: "quantity",
       dataIndex: "quantity",
       key: "quantity",
-      render: quantityInput,
+      render: (quantity, item, index) => (
+        <Input
+          defaultValue={quantity}
+          value={item.quantity}
+          name="quantity"
+          onChange={e => updateBudget(item.category, index, e)}
+        />
+      ),
     },
     {
       title: "Frequency",
       dataIndex: "frequency",
       key: "frequency",
-      render: frequencySelect,
+      render: (frequency, item, index) => (
+        <Select
+          defaultValue={frequency}
+          style={{ width: 120 }}
+          name="frequency"
+          onChange={value => updateFrequency(item.category, index, value)}>
+          <Option value="daily">daily</Option>
+          <Option value="weekly">weekly</Option>
+          <Option value="monthly">monthly</Option>
+          <Option value="yearly">yearly</Option>
+        </Select>
+      ),
     },
     {
       title: "Daily",
@@ -143,32 +226,53 @@ export default () => {
         <span>{formatNumber(getDailyPrice(item) * 365)}</span>
       ),
     },
-    {
-      title: "Action",
-      key: "action",
-      render: (text, record) => (
-        <span>
-          <a>Edit</a>
-        </span>
-      ),
-    },
   ];
 
   return (
     <div className="App">
       <LayoutWrapper>
-        {Object.keys(budget).map(category => {
-          return (
-            <>
-              {category}
-              <Table
-                columns={columns}
-                dataSource={budget[category]}
-                size="small"
-              />
-            </>
-          );
-        })}
+        <Button
+          type="primary"
+          shape="round"
+          icon="plus-circle"
+          size="small"
+          onClick={() => addCategory()}>
+          Add New Category
+        </Button>
+        <Tabs defaultActiveKey="0" type="card">
+          {budget.map((category, index) => {
+            return (
+              <TabPane
+                key={index}
+                tab={
+                  <span>
+                    <Input
+                      size="small"
+                      style={{ width: 100 }}
+                      maxLength={15}
+                      value={category.name}
+                      onChange={e => editCategory(category.name, e)}
+                    />
+                  </span>
+                }>
+                <Table
+                  pagination={false}
+                  columns={columns}
+                  rowKey={index}
+                  dataSource={category.items}
+                  size="small"
+                />
+                <Button
+                  type="primary"
+                  shape="round"
+                  size="small"
+                  onClick={() => addItem(category.name)}>
+                  <Icon type="plus-circle" /> Add new item
+                </Button>
+              </TabPane>
+            );
+          })}
+        </Tabs>
       </LayoutWrapper>
     </div>
   );

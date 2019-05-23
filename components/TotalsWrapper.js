@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Card, Statistic, Progress } from "antd";
 import data from "../data.json";
 import { formatNumber } from "../helpers";
-import ChartsWrapper from "./Charts";
+import Charts from "./Charts";
 
 export default () => {
   const income = data.reduce((total, x) => {
@@ -13,7 +13,6 @@ export default () => {
     return x.amount < 0 ? total + x.amount : total;
   }, 0);
 
-  
   return (
     <Row style={{ marginBottom: "15px" }} gutter={15}>
       <Col span={12}>
@@ -52,7 +51,7 @@ export default () => {
       <Col span={12}>
         <Card size="small" title="Budget">
           <Row gutter={15}>
-            <ChartsWrapper />
+            <Charts />
             {/* <Col span={12}>
               <Chart width={"100%"} height={300} data={data} scale={cols}>
                 <Axis name="genre" />
