@@ -19,21 +19,21 @@ const months = [
   "Dec",
 ];
 
-const income = months.map(i => {
+const income = months.map((key, index) => {
   return data
-    .filter(x => getMonth(parse(x.date, "dd/MM/yyyy", new Date())) === i)
+    .filter(x => getMonth(parse(x.date, "dd/MM/yyyy", new Date())) === index)
     .filter(xx => xx.amount >= 0)
     .reduce((total, num) => total + num.amount, 0);
 });
 
-const expenses = months.map(i => {
+const expenses = months.map((key, index) => {
   return data
-    .filter(x => getMonth(parse(x.date, "dd/MM/yyyy", new Date())) === i)
+    .filter(x => getMonth(parse(x.date, "dd/MM/yyyy", new Date())) === index)
     .filter(xx => xx.amount < 0)
     .reduce((total, num) => total + num.amount * -1, 0);
 });
 
-var dada = {
+const dada = {
   labels: months,
   datasets: [
     {
@@ -49,10 +49,14 @@ var dada = {
   ],
 };
 
+const options = {
+  maintainAspectRatio: false,
+};
+
 export default () => {
   return (
     <Col span={24}>
-      <Bar data={dada} height={150} width={150} />
+      <Bar data={dada} height={300} width={150} options={options} />
     </Col>
   );
 };

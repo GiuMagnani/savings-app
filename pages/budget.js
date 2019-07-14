@@ -17,11 +17,12 @@ import {
 import LayoutWrapper from "../Layout";
 import budgetData from "../budget.json";
 import { formatNumber, parseLocaleNumber } from "../helpers";
+import { withRouter } from "next/router";
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 
-export default () => {
+const Budget = ({router}) => {
   const [budget, setBudget] = useState(budgetData);
   const [activeTab, setActiveTab] = useState("0");
 
@@ -324,7 +325,7 @@ export default () => {
 
   return (
     <div className="App">
-      <LayoutWrapper>
+      <LayoutWrapper router={router}>
         <Button
           type="primary"
           shape="round"
@@ -375,3 +376,5 @@ export default () => {
     </div>
   );
 };
+
+export default withRouter(Budget);

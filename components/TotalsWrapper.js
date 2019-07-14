@@ -4,7 +4,14 @@ import data from "../data.json";
 import { formatNumber } from "../helpers";
 import Charts from "./Charts";
 
-export default () => {
+export default (props) => {
+  console.log(props);
+
+console.log(data);
+
+
+
+
   const income = data.reduce((total, x) => {
     return x.amount > 0 ? total + x.amount : total;
   }, 0);
@@ -14,11 +21,27 @@ export default () => {
   }, 0);
 
   return (
-    <Row style={{ marginBottom: "15px" }} gutter={15}>
+    <Row style={{ marginBottom: "15px", display: "flex" }} gutter={15}>
       <Col span={12}>
-        <Card size="small" title="Current Month Status">
-          <Row gutter={15}>
-            <Col span={12}>
+        <Card
+          size="small"
+          title="Current Month Status"
+          style={{ height: "100%" }}
+          bodyStyle={{
+            height: "320px",
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            justifyContent: "space-between",
+          }}>
+          <Row
+            type="flex"
+            justify="center"
+            gutter={30}
+            style={{
+              width: "100%"
+            }}>
+            <Col span={24}>
               <Statistic
                 title="Income"
                 value={formatNumber(income)}
@@ -31,7 +54,7 @@ export default () => {
               />
               {formatNumber(income)}/ <strong>{formatNumber(3000)}</strong>
             </Col>
-            <Col span={12}>
+            <Col span={24} style={{ marginTop: "30px"}}>
               <Statistic
                 title="Expenses"
                 value={formatNumber(expenses)}

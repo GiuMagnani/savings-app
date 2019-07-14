@@ -1,7 +1,9 @@
 import React from "react";
+import LayoutWrapper from "../Layout";
 import { Table, Tag, Badge } from "antd";
 import data from "../data.json";
 import { formatNumber } from "../helpers";
+import { withRouter } from "next/router";
 
 const columns = [
   {
@@ -54,8 +56,10 @@ const columns = [
   },
 ];
 
-const TableWrapper = () => {
+const Transactions = ({router}) => {
   return (
+      <div className="App">
+      <LayoutWrapper router={router}>
     <Table
       columns={columns}
       dataSource={data}
@@ -64,7 +68,9 @@ const TableWrapper = () => {
         <p style={{ margin: 0 }}>{record.description}</p>
       )}
     />
+    </LayoutWrapper>
+    </div>
   );
 };
 
-export default TableWrapper;
+export default withRouter(Transactions);

@@ -22,6 +22,10 @@ const dataP = {
   labels,
 };
 
+const options = {
+  maintainAspectRatio: false,
+};
+
 export default () => {
-  return <Pie data={dataP} height={150} width={150} />;
+  return <Pie data={dataP} height={300} width={300} options={options}/>;
 };
