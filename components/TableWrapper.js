@@ -36,9 +36,11 @@ const columns = [
     dataIndex: "tags",
     render: tags => (
       <span>
-        <Tag color={tags[0].length < 5 ? "geekblue" : "green"}>
-          {tags[0].toUpperCase()}
-        </Tag>
+        {tags.length > 0 && (
+          <Tag color={tags[0].length < 5 ? "geekblue" : "green"}>
+            {tags[0].toUpperCase()}
+          </Tag>
+        )}
       </span>
     ),
   },

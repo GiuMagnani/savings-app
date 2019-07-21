@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Row, Col, Card, Statistic } from "antd";
 import LayoutWrapper from "../Layout";
 import TableWrapper from "../components/TableWrapper";
@@ -10,16 +10,13 @@ import moment from "moment";
 
 const startOfMonth = moment().startOf("month");
 const endOfMonth = moment().endOf("month");
-
-  console.log();
+  
 
 const New = (props) => {
+  console.log(props);
   const [datePeriod, setDatePeriod] = useState("01/01/2019");
 
-  console.log(moment());
-
   function handleDatePeriod(date, dateString) {
-    console.log(date, dateString);
     setDatePeriod(date);
   }
 

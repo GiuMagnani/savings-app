@@ -21,7 +21,7 @@ const months = [
 
 const income = months.map((key, index) => {
   return data
-    .filter(x => getMonth(parse(x.date, "dd/MM/yyyy", new Date())) === index)
+    .filter(x => {console.log(x.date); return getMonth(parse(x.date, "dd/MM/yyyy", new Date())) === index})
     .filter(xx => xx.amount >= 0)
     .reduce((total, num) => total + num.amount, 0);
 });
