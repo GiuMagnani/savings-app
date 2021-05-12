@@ -9,7 +9,7 @@
     "@zeit/next-css": "^1.0.1",
     "antd": "^3.18.2",
     "babel-plugin-styled-components": "^1.10.0",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "date-fns": "^2.0.0-alpha.9",
     "lodash": "^4.17.15",
     "lodash.groupby": "^4.6.0",
